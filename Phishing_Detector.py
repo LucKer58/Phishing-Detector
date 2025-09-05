@@ -4,7 +4,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
-import os
+import pickle
+
 csv.field_size_limit(20000000)
 
 def preprocess(txt):
@@ -38,8 +39,6 @@ def train_model(texts, labels):
 def evaluate_model(classifier, X_test_tfidf, y_test):
     y_predicted = classifier.predict(X_test_tfidf)
 
-    print(y_predicted)
-
     accuracy = accuracy_score(y_test, y_predicted)
     print(f'Accuracy: {accuracy}')
 
@@ -47,23 +46,8 @@ def evaluate_model(classifier, X_test_tfidf, y_test):
 
 
 
-def predict_phishing(cleaned_text, classifier, vectorizer):
-    text_vector = vectorizer.transform([cleaned_text])
-    
-    decision_value = classifier.decision_function(text_vector)[0]
-    
-    prediction = classifier.predict(text_vector)[0]
-    
-    print(f'Prediction for this email: {prediction}')
-    print(f'Decision value: {decision_value:.4f}')
-    if abs(decision_value) > 1.0:
-        print(f'Confidence: High')
-    elif 0.5 < abs(decision_value) < 1.0:
-        print(f'Confidence: Rather Low')
-    else: print('Confidence: Very Low. Could be either')
-
-
 def main():
+    print("Phishing Email Detector - Training and Evaluation ...")
 
     with open(r'c:\Users\lucie\OneDrive\Desktop\Phishing Detector\Phishing_Email.csv', 'r', encoding='utf-8') as file:
         csv_reader = csv.reader(file)
@@ -78,24 +62,12 @@ def main():
     classifier, vectorizer, X_test_fdidf, Y_test = train_model(processed_text, labels)
     
     evaluate_model(classifier, X_test_fdidf, Y_test)
-
-
-    with open(r'c:\Users\lucie\OneDrive\Desktop\Phishing Detector\Examples.csv', 'r', encoding='utf-8') as test_file:
-        csv_reader2 = csv.reader(test_file)
-        header2 = next(csv_reader2)
-        examples = list(csv_reader2)
-        
-        for i, example in enumerate(examples):
-
-            email_text = example[1]
-            email_label = example[2]
-            
-            preprocess(email_text)
-            
-            print(f"\n--- Example {i} ---")
-            print(f"True label: {email_label}")
-            print(f"Email preview: {email_text[:70]}...")
-            predict_phishing(cleaned_text, classifier, vectorizer)
+    
+    print("\nSaving model and vectorizer to disk...")
+    with open('classifier.pkl', 'wb') as f:
+        pickle.dump(classifier, f)
+    with open('vectorizer.pkl', 'wb') as f:
+        pickle.dump(vectorizer, f)
 
 
 if __name__ == "__main__":
