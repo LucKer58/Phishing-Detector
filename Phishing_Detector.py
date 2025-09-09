@@ -42,12 +42,12 @@ def evaluate_model(classifier, X_test_tfidf, y_test):
     accuracy = accuracy_score(y_test, y_predicted)
     print(f'Accuracy: {accuracy}')
 
-    print(classification_report(y_test, y_predicted, target_names=["Safe Email", "Phishing Email"]))
+    print(classification_report(y_test, y_predicted, target_names=['Safe Email', 'Phishing Email']))
 
 
 
 def main():
-    print("Phishing Email Detector - Training and Evaluation ...")
+    print('Phishing Email Detector - Training and Evaluation ...')
 
     with open(r'c:\Users\lucie\OneDrive\Desktop\Phishing Detector\Phishing_Email.csv', 'r', encoding='utf-8') as file:
         csv_reader = csv.reader(file)
@@ -63,12 +63,12 @@ def main():
     
     evaluate_model(classifier, X_test_fdidf, Y_test)
     
-    print("\nSaving model and vectorizer to disk...")
+    print('\nSaving model and vectorizer to disk...')
     with open('classifier.pkl', 'wb') as f:
         pickle.dump(classifier, f)
     with open('vectorizer.pkl', 'wb') as f:
         pickle.dump(vectorizer, f)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
