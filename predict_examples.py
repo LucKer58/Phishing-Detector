@@ -32,7 +32,7 @@ def main():
         return
     
     print('\nAnalyzing examples from Examples.csv:')
-    with open(r'c:\Users\lucie\OneDrive\Desktop\Phishing Detector\Examples.csv', 'r', encoding='utf-8') as test_file:
+    with open(r'c:\Users\lucie\OneDrive\Desktop\Own Projects\Phishing Detector\Examples.csv', 'r', encoding='utf-8') as test_file:
         csv_reader = csv.reader(test_file)
         examples = list(csv_reader)
 

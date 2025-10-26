@@ -49,7 +49,7 @@ def evaluate_model(classifier, X_test_tfidf, y_test):
 def main():
     print('Phishing Email Detector - Training and Evaluation ...')
 
-    with open(r'c:\Users\lucie\OneDrive\Desktop\Phishing Detector\Phishing_Email.csv', 'r', encoding='utf-8') as file:
+    with open(r'c:\Users\lucie\OneDrive\Desktop\Own Projects\Phishing Detector\Phishing_Email.csv', 'r', encoding='utf-8') as file:
         csv_reader = csv.reader(file)
         header = next(csv_reader)
         emails = list([row for row in csv_reader if len(row[1]) < 7000])
